@@ -29,18 +29,18 @@ print("------------------------------------------------------------------")
 start = datetime.now().strftime("%H:%M:%S")#"23:59:59"
 print('waiting.......')
 
-
-
-while True:
-    current_time = time.strftime("%H:%M:%S")  # Get the current time in HH:MM:SS format
-    print(current_time ,'waiting......')
-    # Perform trading logic at 5-minute intervals
-    for asset in symbols_list.keys():           
-        symbol = symbols_list[asset][0]
-        lot = symbols_list[asset][1]
-        buy, sell, tp, sl = Momentum(symbol)
-        MT5.run(symbol, buy, sell, lot , tp , sl)
-    time.sleep(60)
+def run() :
+    while True:
+        current_time = time.strftime("%H:%M:%S")  # Get the current time in HH:MM:SS format
+        print(current_time ,'waiting......')
+        # Perform trading logic at 5-minute intervals
+        for asset in symbols_list.keys():           
+            symbol = symbols_list[asset][0]
+            lot = symbols_list[asset][1]
+            buy, sell, tp, sl = Momentum(symbol)
+            MT5.run(symbol, buy, sell, lot , tp , sl)
+        time.sleep(60)
 
         
-
+if __name__ == '__main__' :
+    run()
