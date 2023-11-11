@@ -38,9 +38,14 @@ def moving_average_cross(symbol):
 
 
 def trade_every_5_minute(symbol):
+    df = MT5.get_data(symbol, 50, timeframe=mt5.TIMEFRAME_H4).dropna()
+    df['ATR'] = ATR(df, 20)['ATR']
+    TP = df['close'].iloc[-1] + df['ATR'].iloc[-1] * 0.5
+    SL = df['open'].iloc[-1]
+    print(type(TP),type(SL))
     sell = True
     long = False
-    return long, sell
+    return long, sell , TP, SL
 
 
 def ATR(df, n):
