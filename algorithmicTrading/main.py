@@ -37,9 +37,9 @@ def run() :
         for asset in symbols_list.keys():           
             symbol = symbols_list[asset][0]
             lot = symbols_list[asset][1]
-            buy, sell, tp, sl = trade_every_5_minute(symbol)
-            print(tp,sl)
-            MT5.run(symbol, buy, sell, lot , tp , sl)
+            buy, sell, tp, sl = momentum(symbol)
+            if buy or sell :
+                MT5.run(symbol, buy, sell, lot, tp, sl)
         time.sleep(60)
 
         

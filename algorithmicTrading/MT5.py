@@ -25,14 +25,14 @@ class MT5:
            # Buy order Parameters
            if buy:
                type_trade = mt5.ORDER_TYPE_BUY
-               sl = ask_price*(1-SL)
-               tp = ask_price*(1+TP)
+               sl = SL
+               tp = TP
                price = ask_price
            # Sell order Parameters
            else:
                type_trade = mt5.ORDER_TYPE_SELL
-               sl = bid_price*(1+SL)
-               tp = bid_price*(1-TP)
+               sl = SL
+               tp = TP
                price = bid_price
            # Open the trade
            request = {
@@ -127,16 +127,16 @@ class MT5:
         if long==True and position==0:
             long=False
 
-        elif long==False and position==0:
-            res = MT5.orders(symbol, lot, buy=True, id_position=identifier, TP=TP ,SL=SL)
-            print(f"CLOSE LONG TRADE: {res}")
+        # elif long==False and position==0:
+        #     res = MT5.orders(symbol, lot, buy=True, id_position=identifier, TP=TP ,SL=SL)
+        #     print(f"CLOSE LONG TRADE: {res}")
 
         elif short==True and position ==1:
             short=False
 
-        elif short == False and position == 1:
-            res = MT5.orders(symbol, lot, buy=False, id_position=identifier, TP=TP ,SL=SL)
-            print(f"CLOSE SHORT TRADE: {res}")
+        # elif short == False and position == 1:
+        #     res = MT5.orders(symbol, lot, buy=False, id_position=identifier, TP=TP ,SL=SL)
+        #     print(f"CLOSE SHORT TRADE: {res}")
 
         else:
             pass
