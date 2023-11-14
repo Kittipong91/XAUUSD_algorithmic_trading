@@ -51,7 +51,7 @@ class MT5:
            }
            # send a trading request
            result = mt5.order_send(request)
-           result_comment = result.comment
+        #    result_comment = result.comment
 
        # **************************** Close a trade *****************************
        else:
@@ -83,7 +83,7 @@ class MT5:
 
            # send a trading request
            result = mt5.order_send(request)
-           result_comment = result.comment
+        #    result_comment = result.comment
        return result.comment
 
    def resume():
