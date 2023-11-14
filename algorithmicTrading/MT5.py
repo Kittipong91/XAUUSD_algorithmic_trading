@@ -21,6 +21,8 @@ class MT5:
        bid_price = mt5.symbol_info_tick(symbol).bid
        deviation = 20  # mt5.getSlippage(symbol)
        # **************************** Open a trade *****************************
+    #    check price between sl and tp
+       check_price = False
        if id_position == None:
            # Buy order Parameters
            if buy:
@@ -29,12 +31,17 @@ class MT5:
                tp = TP
                price = ask_price
            # Sell order Parameters
+               if (tp > price) and (price > sl) :
+                   check_price = True
            else:
                type_trade = mt5.ORDER_TYPE_SELL
                sl = SL
                tp = TP
                price = bid_price
+               if (sl > price) and (price > tp):
+                   check_price = True
            # Open the trade
+
            request = {
                "action": mt5.TRADE_ACTION_DEAL,
                "symbol": symbol,
@@ -50,15 +57,15 @@ class MT5:
                "type_filling": filling_mode,
            }
            # send a trading request
-           result = mt5.order_send(request)
-        #    result_comment = result.comment
-
+           if check_price :
+                result = mt5.order_send(request)
+                result_comment = result.comment
+                return result_comment
        # **************************** Close a trade *****************************
        else:
            # Buy order Parameters
            if buy:
                type_trade = mt5.ORDER_TYPE_SELL
-               
                price = bid_price
 
            # Sell order Parameters
@@ -83,8 +90,8 @@ class MT5:
 
            # send a trading request
            result = mt5.order_send(request)
-        #    result_comment = result.comment
-       return result.comment
+           result_comment = result.comment
+           return result_comment
 
    def resume():
       mt5.initialize()

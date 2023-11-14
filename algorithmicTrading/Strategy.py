@@ -71,12 +71,12 @@ def momentum(symbol):
     # Buy
     print(symbol,df.dir_count.iloc[-1])
     if df['dir_count'].iloc[-1] >= 5 and df['direction'].iloc[-1] == 'bull':
-        TP = df['close'].iloc[-1] + df['ATR'].iloc[-1] * ATR_SL,
+        TP = df['close'].iloc[-1] + df['ATR'].iloc[-1] * ATR_SL
         SL = df['open'].iloc[-1]
         return True, False, TP, SL
     # Sell
     elif df['dir_count'].iloc[-1] >= 5 and df['direction'].iloc[-1] == 'bear':
-        TP = df['close'].iloc[-1] - df['ATR'].iloc[-1] * ATR_SL,
+        TP = df['close'].iloc[-1] - df['ATR'].iloc[-1] * ATR_SL
         SL = df['open'].iloc[-1]
         return False, True, TP, SL
     # Exit trades---------------------------------------------------------------------------
