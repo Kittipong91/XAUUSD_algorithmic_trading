@@ -12,3 +12,9 @@ CURRENCY_PAIRS = [
     'USDJPY/USDJPY_H4 - USDJPY_H4',
     'XAUUSD/XAUUSD_H4 - XAUUSD_H4',
 ]
+
+SYMBOL = {
+    'XAUUSD' : {
+        'H4' : 'XAUUSD/XAUUSD_H4 - XAUUSD_H4'
+    },
+}
