@@ -15,6 +15,7 @@ CURRENCY_PAIRS = [
 
 SYMBOL = {
     'XAUUSD' : {
-        'H4' : 'XAUUSD/XAUUSD_H4 - XAUUSD_H4'
+        'H4' : 'XAUUSD/XAUUSD_H4 - XAUUSD_H4',
+        'D1': 'XAUUSD/XAUUSD_D1 - XAUUSD_D1',
     },
 }
