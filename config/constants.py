@@ -1,6 +1,5 @@
 PATH_DATA = '../../data/'
 
-
 SYMBOL = {
     'XAUUSD' : {
         'H1': 'XAUUSD/XAUUSD_H1 - XAUUSD_H1',
@@ -8,3 +7,5 @@ SYMBOL = {
         'D1': 'XAUUSD/XAUUSD_D1 - XAUUSD_D1',
     },
 }
+
+TIMEFRAME = ['H4', 'H1']
