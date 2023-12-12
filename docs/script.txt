@@ -1,5 +1,0 @@
-python -u "c:\Users\Win10\Desktop\Forex_algorithm_trading\Algorithm_trading\botTrade.py"
-C:\Users\Win10\anaconda3\Scripts\activate.bat
-
-
-
