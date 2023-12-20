@@ -8,6 +8,6 @@ def plot_return_trades(df,label,account_size) :
     plt.figure(figsize=(26, 10))
     plt.plot(df['ExitTime'],df['cum_res'], label= label)
     plt.legend()
-    plt.title('Returns', fontsize=18)
+    plt.title('Equity', fontsize=18)
 
     return
