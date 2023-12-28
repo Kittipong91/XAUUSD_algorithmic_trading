@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 
-def plot_return_trades(df,label,account_size) :
+def plot_equity_trades(df,label,account_size) :
     df = df.copy()
     df['cum_res'] = df['PnL'].cumsum() + account_size
 
