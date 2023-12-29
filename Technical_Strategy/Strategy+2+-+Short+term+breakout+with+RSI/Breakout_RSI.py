@@ -24,13 +24,13 @@ class Breakout_RSI(Strategy):
 
         current_ATR = self.data.df.loc[self.data.df.index[-1], 'ATR']
 
-        if rsi < 20 and self.data.df['Close'][-1] < pre_average_close and self.data.df['Close'][-1] >= current_average_close and not self.position:
+        if rsi < 20 and self.data.df['Close'][-1] < pre_average_close and self.data.df['Close'][-1] >= current_average_close and not self.position and not np.isnan(current_ATR):
             tp = self.data.Close + current_ATR * self.ATR_SL
             sl = self.data.Close - current_ATR * self.ATR_SL
             # Place your buy logic here
             self.buy(sl=sl, tp=tp, size=1)
 
-        if rsi < 80 and self.data.df['Close'][-1] > pre_average_close and self.data.df['Close'][-1] <= current_average_close and not self.position:
+        if rsi < 80 and self.data.df['Close'][-1] > pre_average_close and self.data.df['Close'][-1] <= current_average_close and not self.position and not np.isnan(current_ATR):
             tp = self.data.Close - current_ATR * self.ATR_SL
             sl = self.data.Close + current_ATR * self.ATR_SL
 
