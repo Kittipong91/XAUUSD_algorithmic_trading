@@ -16,13 +16,13 @@ class London_breakout(Strategy):
 
         current_ATR = self.data.df.loc[self.data.df.index[-1], 'ATR']
 
-        if not self.position and self.data.df['london_opening'][-1] == True and self.data.df['Close'][-1] >= self.data.df['Close'].rolling(8).max()[-1]:
+        if not self.position and self.data.df['london_opening'][-1] == True and self.data.df['Close'][-1] >= self.data.df['Close'].rolling(8).max()[-1] and not np.isnan(current_ATR):
             tp = self.data.Close + current_ATR * self.ATR_SL * 5
             sl = self.data.Close - current_ATR * self.ATR_SL
             # Place your buy logic here
             self.buy(sl=sl, tp=tp, size=1)
 
-        if not self.position and self.data.df['london_opening'][-1] == True and self.data.df['Close'][-1] <= self.data.df['Close'].rolling(8).min()[-1]:
+        if not self.position and self.data.df['london_opening'][-1] == True and self.data.df['Close'][-1] <= self.data.df['Close'].rolling(8).min()[-1] and not np.isnan(current_ATR):
             tp = self.data.Close - current_ATR * self.ATR_SL * 5
             sl = self.data.Close + current_ATR * self.ATR_SL
 
