@@ -1,20 +1,15 @@
+# import sys
+# sys.path.append('../')
 from datetime import datetime
 import pandas as pd
 import MetaTrader5 as mt5
 import numpy as np
 import time
 from MT5 import *
-from Strategy import *
+from strategies.Strategy import momentum
    
 symbols_list = {
     "Gold - US Dollar": ["XAUUSDm", 0.01],
-    "Euro – US Dollar": ["EURUSDm", 0.01],
-    "US dollar – Japanese Yen": ["USDJPYm", 0.01],
-    "British Pound – US Dollar": ["GBPUSDm", 0.01],
-    "Australian Dollar – US Dollar": ["AUDUSDm", 0.01],
-    "US Dollar – Swiss Franc": ["USDCHFm", 0.01],
-    "US Dollar – Canadian Dollar": ["USDCADm", 0.01],
-    "New zealand – US Dollar": ["NZDUSDm", 0.01],
 }
 
 mt5.initialize()

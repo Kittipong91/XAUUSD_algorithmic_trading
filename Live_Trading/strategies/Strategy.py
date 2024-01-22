@@ -67,15 +67,15 @@ def momentum(symbol):
     df['direction'] = np.where(df['close'] > df['open'], 'bull', 'bear')
     df['dir_count'] = df.groupby(
         (df['direction'] != df['direction'].shift(1)).cumsum()).cumcount() + 1
-    ATR_SL = 0.5
+    ATR_SL = 6
     # Buy
-    print(symbol,df.dir_count.iloc[-1])
-    if df['dir_count'].iloc[-1] >= 5 and df['direction'].iloc[-1] == 'bull':
+    print(symbol,df.dir_count.iloc[-2])
+    if df['dir_count'].iloc[-2] >= 2 and df['direction'].iloc[-2] == 'bull':
         TP = df['close'].iloc[-1] + df['ATR'].iloc[-1] * ATR_SL
         SL = df['open'].iloc[-1]
         return True, False, TP, SL
     # Sell
-    elif df['dir_count'].iloc[-1] >= 5 and df['direction'].iloc[-1] == 'bear':
+    elif df['dir_count'].iloc[-2] >= 2 and df['direction'].iloc[-2] == 'bear':
         TP = df['close'].iloc[-1] - df['ATR'].iloc[-1] * ATR_SL
         SL = df['open'].iloc[-1]
         return False, True, TP, SL
@@ -85,4 +85,4 @@ def momentum(symbol):
     else:
         long = False
         sell = False
-        return long, sell, 0.01, 0.01
+        return long, sell , 0.01 , 0.01
