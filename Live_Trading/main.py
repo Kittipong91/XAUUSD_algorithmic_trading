@@ -6,7 +6,7 @@ import MetaTrader5 as mt5
 import numpy as np
 import time
 from MT5 import *
-from strategies.Strategy import momentum
+from strategies.Momentum import momentum
    
 symbols_list = {
     "Gold - US Dollar": ["XAUUSDm", 0.01],
@@ -32,9 +32,9 @@ def run() :
         for asset in symbols_list.keys():           
             symbol = symbols_list[asset][0]
             lot = symbols_list[asset][1]
-            buy, sell, tp, sl = momentum(symbol)
+            buy, sell, dif_tp, dif_sl = momentum(symbol)
             if buy or sell :
-                MT5.run(symbol, buy, sell, lot, tp, sl)
+                MT5.run(symbol, buy, sell, lot, dif_tp, dif_sl)
         time.sleep(60)
 
         

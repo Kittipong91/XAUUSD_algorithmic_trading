@@ -1,0 +1,47 @@
+from datetime import datetime
+import pandas as pd
+import MetaTrader5 as mt5
+import numpy as np
+import time
+from MT5 import *
+
+
+def ATR(df, n):
+    df = df.copy()
+    df['High-Low'] = abs(df['high'] - df['low'])
+    df['High-PrevClose'] = abs(df['high'] - df['close'].shift(1))
+    df['Low-PrevClose'] = abs(df['low'] - df['close'].shift(1))
+    df['TR'] = df[['High-Low', 'High-PrevClose',
+                   'Low-PrevClose']].max(axis=1, skipna=False)
+    df['ATR'] = df['TR'].rolling(n).mean()
+    df = df.drop(['High-Low', 'High-PrevClose', 'Low-PrevClose'], axis=1)
+    return df
+
+
+def momentum(symbol):
+
+    df = MT5.get_data(symbol, 50, timeframe=mt5.TIMEFRAME_H4).dropna()
+
+    df['ATR'] = ATR(df, 20)['ATR']
+    df['direction'] = np.where(df['close'] > df['open'], 'bull', 'bear')
+    df['dir_count'] = df.groupby(
+        (df['direction'] != df['direction'].shift(1)).cumsum()).cumcount() + 1
+    ATR_SL = 6
+    # Buy
+    print(symbol,df.dir_count.iloc[-2])
+    if df['dir_count'].iloc[-2] >= 2 and df['direction'].iloc[-2] == 'bull':
+        dif_TP = df['ATR'].iloc[-1] * ATR_SL
+        dif_SL = abs(df['open'].iloc[-2] - df['close'].iloc[-2])
+        return True, False, dif_TP, dif_SL
+    # Sell
+    elif df['dir_count'].iloc[-2] >= 2 and df['direction'].iloc[-2] == 'bear':
+        dif_TP = df['ATR'].iloc[-1] * ATR_SL
+        dif_SL = abs(df['open'].iloc[-2] - df['close'].iloc[-2])
+        return False, True, dif_TP, dif_SL
+    # Exit trades---------------------------------------------------------------------------
+    # Buy profit
+
+    else:
+        long = False
+        sell = False
+        return long, sell , None , None

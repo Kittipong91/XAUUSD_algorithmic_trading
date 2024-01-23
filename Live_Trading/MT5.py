@@ -13,7 +13,7 @@ class MT5:
         rates_frame = rates_frame.set_index('time')
         return rates_frame
 
-   def orders(symbol, lot, buy=True, id_position=None, TP=0.01 , SL=0.01):
+   def orders(symbol, lot, buy=True, id_position=None, dif_TP = None , dif_SL = None):
        mt5.initialize()
        #filling_mode = mt5.symbol_info(symbol).filling_mode - 1
        filling_mode =  mt5.ORDER_FILLING_IOC
@@ -21,22 +21,25 @@ class MT5:
        bid_price = mt5.symbol_info_tick(symbol).bid
        deviation = 20  # mt5.getSlippage(symbol)
        # **************************** Open a trade *****************************
-    #    check price between sl and tp
+        #    check price between sl and tp
        check_price = False
+       if (dif_TP == None and dif_SL == None) :
+        check_price = True
+        
        if id_position == None:
            # Buy order Parameters
            if buy:
                type_trade = mt5.ORDER_TYPE_BUY
-               sl = SL
-               tp = TP
+               sl = ask_price - dif_SL
+               tp = ask_price + dif_TP
                price = ask_price
            # Sell order Parameters
                if (tp > price) and (price > sl) :
                    check_price = True
            else:
                type_trade = mt5.ORDER_TYPE_SELL
-               sl = SL
-               tp = TP
+               sl = bid_price + dif_SL
+               tp = bid_price - dif_TP
                price = bid_price
                if (sl > price) and (price > tp):
                    check_price = True
@@ -109,7 +112,7 @@ class MT5:
       return summary
 
 
-   def run(symbol, long, short, lot, tp=0.01, sl=0.01):
+   def run(symbol, long, short, lot, tp=None, sl=None):
         
         TP = tp
         SL = sl
@@ -152,12 +155,12 @@ class MT5:
         """ Buy or short """
         if long==True:
 
-            res = MT5.orders(symbol, lot, buy=True, id_position=None , TP=TP ,SL=SL) 
+            res = MT5.orders(symbol, lot, buy=True, id_position=None , dif_TP=TP ,dif_SL=SL) 
            
             print(f"OPEN LONG TRADE: {res}")
 
         if short==True:
-            res = MT5.orders(symbol, lot, buy=False, id_position=None, TP=TP ,SL=SL)
+            res = MT5.orders(symbol, lot, buy=False, id_position=None, dif_TP=TP ,dif_SL=SL)
           
             print(f"OPEN SHORT TRADE: {res}")
 
