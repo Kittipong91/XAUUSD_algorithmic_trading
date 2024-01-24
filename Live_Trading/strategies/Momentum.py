@@ -48,6 +48,8 @@ def momentum(symbol):
 symbols_list = {
     "Gold - US Dollar": ["XAUUSDm", 0.01],
 }
+magic = 24001
+strategy = 'Momentum'
 
 def check_time() :
     current_time = time.strftime("%H:%M:%S")
@@ -71,6 +73,6 @@ def run_momentum():
             lot = symbols_list[asset][1]
             buy, sell, dif_tp, dif_sl = momentum(symbol)
             if buy or sell:
-                MT5.run(symbol, buy, sell, lot, dif_tp, dif_sl)
+                MT5.run(symbol, buy, sell, lot, dif_tp, dif_sl,magic,strategy)
 
         time.sleep(60)

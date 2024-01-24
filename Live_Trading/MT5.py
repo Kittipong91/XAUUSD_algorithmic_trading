@@ -13,7 +13,7 @@ class MT5:
         rates_frame = rates_frame.set_index('time')
         return rates_frame
 
-   def orders(symbol, lot, buy=True, id_position=None, dif_TP = None , dif_SL = None, strategy = '' ):
+   def orders(symbol, lot, buy=True, id_position=None, dif_TP = None , dif_SL = None, magic = None , strategy = None ):
        mt5.initialize()
        #filling_mode = mt5.symbol_info(symbol).filling_mode - 1
        filling_mode =  mt5.ORDER_FILLING_IOC
@@ -22,13 +22,11 @@ class MT5:
        deviation = 20  # mt5.getSlippage(symbol)
        # **************************** Open a trade *****************************
         #    check price between sl and tp
-       check_price = False
-       if (dif_TP == None and dif_SL == None) :
-        check_price = True
-        
-       if id_position == None:
+       
+       
+       if id_position == None and dif_SL != None and dif_TP != None:
            # Buy order Parameters
-           if buy:
+           if buy :
                type_trade = mt5.ORDER_TYPE_BUY
                sl = ask_price - dif_SL
                tp = ask_price + dif_TP
@@ -54,47 +52,74 @@ class MT5:
                "deviation": deviation,
                "sl": sl,
                "tp": tp,
-               "magic": 234000,
-               "comment": "python script order",
+               "magic": magic,
+               "comment": strategy,
                "type_time": mt5.ORDER_TIME_GTC,
                "type_filling": filling_mode,
            }
            # send a trading request
-           if check_price :
-                result = mt5.order_send(request)
-                result_comment = result.comment
-                return result_comment
+          
+       if dif_SL == None and dif_TP == None :        
+         
+            # Buy order Parameters
+            if buy :
+                type_trade = mt5.ORDER_TYPE_BUY
+                price = ask_price
+                # Sell order Parameters
+                    
+            else:
+                type_trade = mt5.ORDER_TYPE_SELL
+                price = bid_price
+                 
+            # Open the trade
+            request = {
+                    "action": mt5.TRADE_ACTION_DEAL,
+                    "symbol": symbol,
+                    "volume": lot,
+                    "type": type_trade,
+                    "price": price,
+                    "deviation": deviation,
+                    "magic": magic,
+                    "comment": strategy,
+                    "type_time": mt5.ORDER_TIME_GTC,
+                    "type_filling": filling_mode,
+            }
+           
+       result = mt5.order_send(request)
+       result_comment = result.comment
+       # result_comment = 'ddd'
+       return result_comment
        # **************************** Close a trade *****************************
-       else:
-           # Buy order Parameters
-           if buy:
-               type_trade = mt5.ORDER_TYPE_SELL
-               price = bid_price
+    #    else:
+    #        # Buy order Parameters
+    #        if buy:
+    #            type_trade = mt5.ORDER_TYPE_SELL
+    #            price = bid_price
 
-           # Sell order Parameters
-           else:
-               type_trade = mt5.ORDER_TYPE_BUY
-               price = ask_price
+    #        # Sell order Parameters
+    #        else:
+    #            type_trade = mt5.ORDER_TYPE_BUY
+    #            price = ask_price
 
-           # Close the trade
-           request = {
-               "action": mt5.TRADE_ACTION_DEAL,
-               "symbol": symbol,
-               "volume": lot,
-               "type": type_trade,
-               "position": id_position,
-               "price": price,
-               "deviation": deviation,
-               "magic": 234000,
-               "comment": "python script order",
-               "type_time": mt5.ORDER_TIME_GTC,
-               "type_filling": filling_mode,
-           }
+    #        # Close the trade
+    #        request = {
+    #            "action": mt5.TRADE_ACTION_DEAL,
+    #            "symbol": symbol,
+    #            "volume": lot,
+    #            "type": type_trade,
+    #            "position": id_position,
+    #            "price": price,
+    #            "deviation": deviation,
+    #            "magic": magic,
+    #            "comment": "python script order",
+    #            "type_time": mt5.ORDER_TIME_GTC,
+    #            "type_filling": filling_mode,
+    #        }
 
-           # send a trading request
-           result = mt5.order_send(request)
-           result_comment = result.comment
-           return result_comment
+    #        # send a trading request
+    #        result = mt5.order_send(request)
+    #        result_comment = result.comment
+    #        return result_comment
 
    def resume():
       mt5.initialize()
@@ -112,7 +137,7 @@ class MT5:
       return summary
 
 
-   def run(symbol, long, short, lot, tp=None, sl=None):
+   def run(symbol, long, short, lot, tp=None, sl=None ,magic=None, strategy=None):
         
         TP = tp
         SL = sl
@@ -155,12 +180,12 @@ class MT5:
         """ Buy or short """
         if long==True:
 
-            res = MT5.orders(symbol, lot, buy=True, id_position=None , dif_TP=TP ,dif_SL=SL) 
+            res = MT5.orders(symbol, lot, buy=True, id_position=position , dif_TP=TP ,dif_SL=SL, magic=magic , strategy=strategy) 
            
             print(f"OPEN LONG TRADE: {res}")
 
         if short==True:
-            res = MT5.orders(symbol, lot, buy=False, id_position=None, dif_TP=TP ,dif_SL=SL)
+            res = MT5.orders(symbol, lot, buy=False, id_position= position, dif_TP=TP ,dif_SL=SL , magic=magic , strategy=strategy)
           
             print(f"OPEN SHORT TRADE: {res}")
 
