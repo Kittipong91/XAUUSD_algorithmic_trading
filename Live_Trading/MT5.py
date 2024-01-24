@@ -13,7 +13,7 @@ class MT5:
         rates_frame = rates_frame.set_index('time')
         return rates_frame
 
-   def orders(symbol, lot, buy=True, id_position=None, dif_TP = None , dif_SL = None):
+   def orders(symbol, lot, buy=True, id_position=None, dif_TP = None , dif_SL = None, strategy = '' ):
        mt5.initialize()
        #filling_mode = mt5.symbol_info(symbol).filling_mode - 1
        filling_mode =  mt5.ORDER_FILLING_IOC
