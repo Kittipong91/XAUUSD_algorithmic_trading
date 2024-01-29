@@ -4,6 +4,7 @@ from datetime import datetime
 import MetaTrader5 as mt5
 from MT5 import *
 from strategies.Momentum import run_momentum
+from strategies.Pivot_Point import run_Pivot_Point
    
 mt5.initialize()
 current_account_info = mt5.account_info()
@@ -19,4 +20,10 @@ print('Starting.......')
 
         
 if __name__ == '__main__' :
-    run_momentum()
+
+    # Strategy : Momentum
+    # run_momentum()
+    
+    # Strategy : Pivot_Point
+    run_Pivot_Point()
+
