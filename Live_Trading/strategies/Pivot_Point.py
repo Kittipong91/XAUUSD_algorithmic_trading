@@ -17,17 +17,6 @@ def PrepareData(data):
     return data
 
 
-def ATR(df, n):
-    df = df.copy()
-    df['High-Low'] = abs(df['high'] - df['low'])
-    df['High-PrevClose'] = abs(df['high'] - df['close'].shift(1))
-    df['Low-PrevClose'] = abs(df['low'] - df['close'].shift(1))
-    df['TR'] = df[['High-Low', 'High-PrevClose',
-                   'Low-PrevClose']].max(axis=1, skipna=False)
-    df['ATR'] = df['TR'].rolling(n).mean()
-    df = df.drop(['High-Low', 'High-PrevClose', 'Low-PrevClose'], axis=1)
-    return df
-
 
 def Pivot_Point(symbol):
 
@@ -53,7 +42,8 @@ def Pivot_Point(symbol):
     df["position"] = np.where(df["open"] <= df["S1"], 0, df["position"])
 
     # get signal
-    position = df.position.iloc[-1]
+    position = df.position.iloc[-2]
+    print('signal :' , position )
     # Buy
     if position == 1:
         
@@ -85,15 +75,15 @@ def check_time():
 
 def run_Pivot_Point():
     while True:
-        df = MT5.get_data("XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
-        time_curent = df.index[-1]
-        while True:
-            df = MT5.get_data(
-                "XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
-            if time_curent == df.index[-2]:
-                break
-            check_time()
-            time.sleep(60)
+        # df = MT5.get_data("XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
+        # time_curent = df.index[-1]
+        # while True:
+        #     df = MT5.get_data(
+        #         "XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
+        #     if time_curent == df.index[-2]:
+        #         break
+        #     check_time()
+        #     time.sleep(60)
         # Get the current time in HH:MM:SS format
         check_time()
         # Perform trading logic at 5-minute intervals
