@@ -43,18 +43,13 @@ class Pivot_PointV2(Strategy):
 
     def next(self):
         position = self.data.df.loc[self.data.df.index[-1], 'position']
-        if position == 1 :
+        if position == 1:
             if self.position.is_short:
                 self.position.close()
-            
-            if not self.position :
-                self.buy(size=1)
-
-        if position == 0 :
+            self.buy(size=1)
+        if position == 0:
             if self.position.is_long:
                 self.position.close()
-
-            if not self.position :
-                self.sell(size=1)
+            self.sell(size=1)
 
       

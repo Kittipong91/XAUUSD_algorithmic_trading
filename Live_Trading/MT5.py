@@ -8,8 +8,9 @@ class MT5:
         utc_from = datetime.now()
         rates = mt5.copy_rates_from(symbol, timeframe, utc_from, n)
         rates_frame = pd.DataFrame(rates)
-        rates_frame['time'] = pd.to_datetime(rates_frame['time']+25200, unit='s')
-        rates_frame['time'] = pd.to_datetime(rates_frame['time'], format='%Y-%m-%d')
+        rates_frame['time'] = pd.to_datetime(rates_frame['time'], unit='s')
+        # rates_frame['time'] = pd.to_datetime(rates_frame['time']+25200, unit='s')
+        # rates_frame['time'] = pd.to_datetime(rates_frame['time'], format='%Y-%m-%d')
         rates_frame = rates_frame.set_index('time')
         return rates_frame
    

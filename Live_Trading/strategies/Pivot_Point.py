@@ -25,7 +25,7 @@ def Pivot_Point(symbol):
 
     # get data from mt5
     df = MT5.get_data(symbol, 50, timeframe=mt5.TIMEFRAME_H4).dropna()
-
+    # print(df)
     # prepare data
     df = PrepareData(df)
 
@@ -40,6 +40,7 @@ def Pivot_Point(symbol):
     df["position"] = np.where(
     df["open"] >= df["R1"], 0, df["position"])
     df["position"] = np.where(df["open"] <= df["S1"], 0, df["position"])
+    # print(df)
 
     # get signal
     position = df.position.iloc[-2]
@@ -75,15 +76,15 @@ def check_time():
 
 def run_Pivot_Point():
     while True:
-        # df = MT5.get_data("XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
-        # time_curent = df.index[-1]
-        # while True:
-        #     df = MT5.get_data(
-        #         "XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
-        #     if time_curent == df.index[-2]:
-        #         break
-        #     check_time()
-        #     time.sleep(60)
+        df = MT5.get_data("XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
+        time_curent = df.index[-1]
+        while True:
+            df = MT5.get_data(
+                "XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
+            if time_curent == df.index[-2]:
+                break
+            check_time()
+            time.sleep(60)
         # Get the current time in HH:MM:SS format
         check_time()
         # Perform trading logic at 5-minute intervals
