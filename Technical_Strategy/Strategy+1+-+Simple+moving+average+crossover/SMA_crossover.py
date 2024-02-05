@@ -5,6 +5,7 @@ from util.SMA import *
 from util.plot_equity import *
 from util.load_data import *
 
+
 class SMA_crossover(Strategy):
     ATR_SL = 0.5
 
@@ -21,13 +22,13 @@ class SMA_crossover(Strategy):
         current_ATR = self.data.df.loc[self.data.df.index[-1], 'ATR']
 
         if pre_sma_fast < pre_sma_low and current_sma_fast >= current_sma_low and not self.position:
-            tp = self.data.Close + current_ATR * self.ATR_SL
-            sl = self.data.Close - current_ATR * self.ATR_SL
+            tp = self.data.Close[-1] + current_ATR * self.ATR_SL
+            sl = self.data.Close[-1] - current_ATR * self.ATR_SL
             # Place your buy logic here
             self.buy(sl=sl, tp=tp, size=1)
 
         if pre_sma_fast > pre_sma_low and current_sma_fast <= current_sma_low and not self.position:
-            tp = self.data.Close - current_ATR * self.ATR_SL
-            sl = self.data.Close + current_ATR * self.ATR_SL
+            tp = self.data.Close[-1] - current_ATR * self.ATR_SL
+            sl = self.data.Close[-1] + current_ATR * self.ATR_SL
 
             self.sell(sl=sl, tp=tp, size=1)

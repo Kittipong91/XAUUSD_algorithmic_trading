@@ -43,7 +43,7 @@ def Pivot_Point(symbol):
     print(df.tail(5))
 
     # get signal
-    position = df.position.iloc[-1]
+    position = df.position.iloc[-2]
 
     print('------------------------------------------------------------------')
     print('signal :' , position )
