@@ -16,6 +16,7 @@ print(f"Balance: {current_account_info.balance} USD,\t"
 print("------------------------------------------------------------------")
 
 start = datetime.now().strftime("%H:%M:%S")#"23:59:59"
+print(start)
 print('Starting.......')
 
         

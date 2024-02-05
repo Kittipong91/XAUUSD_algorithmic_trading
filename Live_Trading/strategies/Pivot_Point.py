@@ -40,10 +40,12 @@ def Pivot_Point(symbol):
     df["position"] = np.where(
     df["open"] >= df["R1"], 0, df["position"])
     df["position"] = np.where(df["open"] <= df["S1"], 0, df["position"])
-    # print(df)
+    print(df.tail(5))
 
     # get signal
-    position = df.position.iloc[-2]
+    position = df.position.iloc[-1]
+
+    print('------------------------------------------------------------------')
     print('signal :' , position )
     # Buy
     if position == 1:
