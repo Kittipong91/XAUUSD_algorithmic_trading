@@ -1,6 +1,5 @@
 from backtesting import Strategy
 from util.ATR import *
-from util.plot_equity import *
 from util.load_data import *
 from util.SMA import *
 import numpy as np
@@ -26,13 +25,13 @@ class Inside_Bar(Strategy):
         current_ATR = self.data.df.loc[self.data.df.index[-1], 'ATR']
 
         if current_inside_bar == True and pre_inside_bar == True and not self.position and sma_fast >= sma_low and self.data.Close > self.data.Open:
-            tp = self.data.Close + current_ATR * self.ATR_SL
-            sl = self.data.Close - current_ATR * self.ATR_SL
+            tp = self.data.Close + current_ATR * self.ATR_SL + 0.3
+            sl = self.data.Close - current_ATR * self.ATR_SL - 0.3
             # Place your buy logic here
             self.buy(sl=sl, tp=tp, size=1)
 
         if current_inside_bar == True and pre_inside_bar == True and not self.position and sma_fast <= sma_low and self.data.Close < self.data.Open:
-            tp = self.data.Close - current_ATR * self.ATR_SL
-            sl = self.data.Close + current_ATR * self.ATR_SL
+            tp = self.data.Close - current_ATR * self.ATR_SL - 0.3
+            sl = self.data.Close + current_ATR * self.ATR_SL + 0.3
 
             self.sell(sl=sl, tp=tp, size=1)

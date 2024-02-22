@@ -29,7 +29,7 @@ class Fibonacci(Strategy):
             
 
 def PrepareData(data):
-    order = 70  # approx. 3 months
+    order = 7  
     data["hh"] = np.nan
     data["ll"] = np.nan
 

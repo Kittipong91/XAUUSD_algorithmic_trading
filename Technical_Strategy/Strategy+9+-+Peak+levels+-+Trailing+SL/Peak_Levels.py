@@ -32,13 +32,13 @@ class Peak_Levels(Strategy):
         current_ATR = self.data.df.loc[self.data.df.index[-1], 'ATR']
 
         if self.support != [] and any(self.data.df['Close'][-1] > s for s in self.support) and any(self.data.df['Close'][-1] <= s for s in self.support) and not self.position and not np.isnan(current_ATR):
-            tp = self.data.Close + current_ATR * self.ATR_SL
-            sl = self.data.Close - current_ATR * self.ATR_SL
+            tp = self.data.Close + current_ATR * self.ATR_SL + 0.3
+            sl = self.data.Close - current_ATR * self.ATR_SL - 0.3
             # Place your buy logic here
             self.buy(sl=sl, tp=tp, size=1)
 
         if self.resist != [] and any(self.data.df['Close'][-1] < r for r in self.resist) and any(self.data.df['Close'][-1] >= r for r in self.resist) and not self.position and not np.isnan(current_ATR):
-            tp = self.data.Close - current_ATR * self.ATR_SL
-            sl = self.data.Close + current_ATR * self.ATR_SL
+            tp = self.data.Close - current_ATR * self.ATR_SL - 0.3
+            sl = self.data.Close + current_ATR * self.ATR_SL + 0.3
 
             self.sell(sl=sl, tp=tp, size=1)
