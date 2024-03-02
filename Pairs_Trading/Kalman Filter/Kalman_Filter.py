@@ -100,11 +100,24 @@ class Kalman_Filter():
         self.result = signal
         return signal
 
-    def Run(self, size=1):
+    def Run(self, size=1 , ptc = 0.2):
 
         # magin = 1/100
         # size 1 = 0.01 lot
         # fix size
+
+        #         ต้นทุนสเปรด
+        # 0.20 USD
+        # ค่าธรรมเนียม
+        # 0 USD
+        # สว็อปสั้น
+        # 0 USD
+        # สว็อปยาว
+        # −0.33 USD
+        # มูลค่าต่อปิ๊ป
+        # 0.010000 USD
+
+        tc = ptc * size
 
         self.Backtest()
         signal = self.result.copy()
@@ -113,12 +126,16 @@ class Kalman_Filter():
 
         signal['returns2'] = self.data_2['returns']
 
-        signal['size'] = size
-
         signal['returns_all'] = (signal['returns'] * signal['stock1_signal'].shift(1) +
-                                 signal['returns2'] * signal['stock2_signal'].shift(1)) * signal.size
+                                 signal['returns2'] * signal['stock2_signal'].shift(1)) * size
+        
+        signal['check_tc'] = np.where(signal['stock1_signal'].shift(1) == signal['stock1_signal'], 0, 1)
+
+        signal['returns_all'] = signal['returns_all'] - tc * signal['check_tc']
 
         signal['strategy'] = signal['returns_all']
+
+        signal.fillna(0, inplace=True)
 
         self.results = signal
 
