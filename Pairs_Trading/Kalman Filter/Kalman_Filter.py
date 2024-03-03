@@ -14,8 +14,8 @@ class Kalman_Filter():
         self.tp_year = None
 
     def Backtest(self):
-        self.data_1 = self.data_1.reindex(
-            self.data_2.index, method='ffill')  # fill forward
+        self.data_2 = self.data_2.reindex(
+            self.data_1.index, method='ffill')  # fill forward
 
         stock1 = self.data_1
         stock2 = self.data_2
@@ -100,7 +100,7 @@ class Kalman_Filter():
         self.result = signal
         return signal
 
-    def Run(self, size=1 , ptc = 0.2):
+    def Run(self, size=1 , ptc = 0.2 ,cash = 10000) :
 
         # magin = 1/100
         # size 1 = 0.01 lot
@@ -123,19 +123,38 @@ class Kalman_Filter():
         signal = self.result.copy()
         signal['returns'] = signal['Close'].pct_change()
         self.data_2['returns'] = self.data_2['Close'].pct_change()
+        self.data_2['Pnl_2'] = self.data_2['Close'] - self.data_2['Close'].shift(1)
+        
+        signal['Pnl_1'] = signal['Close'] - signal['Close'].shift(1)
 
         signal['returns2'] = self.data_2['returns']
+        signal['Pnl_2'] = self.data_2['Pnl_2']
 
+        signal.fillna(0, inplace=True)
+
+        signal['Pnl'] = (signal['Pnl_1'] * signal['stock1_signal'].shift(1) +
+                         signal['Pnl_2'] * signal['stock2_signal'].shift(1)) * size
+ 
         signal['returns_all'] = (signal['returns'] * signal['stock1_signal'].shift(1) +
                                  signal['returns2'] * signal['stock2_signal'].shift(1)) * size
+        
+        signal.fillna(0, inplace=True)
         
         signal['check_tc'] = np.where(signal['stock1_signal'].shift(1) == signal['stock1_signal'], 0, 1)
 
         signal['returns_all'] = signal['returns_all'] - tc * signal['check_tc']
 
-        signal['strategy'] = signal['returns_all']
+        signal['Pnl'] = signal['Pnl'] - tc * signal['check_tc']
+
+       
 
         signal.fillna(0, inplace=True)
+
+        signal['Equity'] = cash + tc + signal['Pnl'].cumsum()
+
+        signal['Returns'] = signal['Equity'].pct_change().fillna(0)
+
+        signal['strategy'] = signal['Equity'].pct_change().fillna(0)
 
         self.results = signal
 
