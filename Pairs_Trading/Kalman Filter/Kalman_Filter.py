@@ -14,8 +14,8 @@ class Kalman_Filter():
         self.tp_year = None
 
     def Backtest(self):
-        self.data_2 = self.data_2.reindex(
-            self.data_1.index, method='ffill')  # fill forward
+        self.data_1 = self.data_1.reindex(
+            self.data_2.index, method='ffill')  # fill forward
 
         stock1 = self.data_1
         stock2 = self.data_2
@@ -100,7 +100,7 @@ class Kalman_Filter():
         self.result = signal
         return signal
 
-    def Run(self, size=1 , ptc = 0.2 ,cash = 10000) :
+    def Run(self, size=1 , ptc = 0.2 ,cash = 10000 , currency = None) :
 
         # magin = 1/100
         # size 1 = 0.01 lot
@@ -119,6 +119,14 @@ class Kalman_Filter():
 
         tc = ptc * size
 
+        
+        if currency == None :
+            pip = 1000
+        elif currency == 'JPY' :
+            pip = 6
+
+
+
         self.Backtest()
         signal = self.result.copy()
         signal['returns'] = signal['Close'].pct_change()
@@ -133,7 +141,7 @@ class Kalman_Filter():
         signal.fillna(0, inplace=True)
 
         signal['Pnl'] = (signal['Pnl_1'] * signal['stock1_signal'].shift(1) +
-                         signal['Pnl_2'] * signal['stock2_signal'].shift(1)) * size
+                         signal['Pnl_2'] * pip * signal['stock2_signal'].shift(1)) * size
  
         signal['returns_all'] = (signal['returns'] * signal['stock1_signal'].shift(1) +
                                  signal['returns2'] * signal['stock2_signal'].shift(1)) * size
