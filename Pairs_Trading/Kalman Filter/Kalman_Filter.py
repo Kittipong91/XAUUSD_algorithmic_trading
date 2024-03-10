@@ -123,7 +123,9 @@ class Kalman_Filter():
         if currency == None :
             pip = 1000
         elif currency == 'JPY' :
-            pip = 6
+            pip =  6
+        elif currency == 'BRENTCMDUSD':
+            pip = 10
 
 
 
