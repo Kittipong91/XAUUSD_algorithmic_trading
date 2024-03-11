@@ -126,6 +126,8 @@ class Kalman_Filter():
             pip =  6
         elif currency == 'BRENTCMDUSD':
             pip = 10
+        elif currency == 'XAGUSD':
+            pip = 50
 
 
 
