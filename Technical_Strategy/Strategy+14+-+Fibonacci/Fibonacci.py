@@ -28,7 +28,7 @@ class Fibonacci(Strategy):
 
             
 
-def PrepareData(data , order = 70):
+def PrepareData(data , order = 7):
     
     data["hh"] = np.nan
     data["ll"] = np.nan

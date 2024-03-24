@@ -43,7 +43,7 @@ def Pivot_Point(symbol):
     print(df.tail(5))
 
     # get signal
-    position = df.position.iloc[-2]
+    position = df.position.iloc[-1]
 
     print('------------------------------------------------------------------')
     print('signal :' , position )
@@ -80,10 +80,12 @@ def run_Pivot_Point():
     while True:
         df = MT5.get_data("XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
         time_curent = df.index[-1]
+        
         while True:
             df = MT5.get_data(
                 "XAUUSDm", 2, timeframe=mt5.TIMEFRAME_H4).dropna()
             if time_curent == df.index[-2]:
+                print('-----------------------------H4-------------------------------------')
                 break
             check_time()
             time.sleep(60)
